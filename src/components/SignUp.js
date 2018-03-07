@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Link, WithRouter } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { auth } from '../firebase';
 import * as routes from '../constants/routes';
 
 
@@ -21,7 +22,11 @@ const INITIAL_STATE = {
   error: null,
 };
 
-class SignUpForm extends Component {
+const byPropKey = (propertyName, value) => () => ({
+  [propertyName]: value,
+});
+
+class SignUpForm extends React.Component {
   constructor(props){
     super(props);
 
@@ -43,11 +48,6 @@ class SignUpForm extends Component {
     e.preventDefault();
   }
 
-  const byPropKey = (propertyName, value) => () => ({
-    [propertyName]: value,
-  });
-
-
   render(){
     const { username, email, passwordOne, passwordTwo, error } = this.state;
 
@@ -57,25 +57,25 @@ class SignUpForm extends Component {
       <form onSubmit={this.onSubmit}>
       <input
           value={username}
-          onChange={event => this.setState(byPropKey('username', event.target.value))}
+          onChange={e => this.setState(byPropKey('username', e.target.value))}
           type="text"
           placeholder="Full Name"
           />
           <input
             value={email}
-            onChange={event => this.setState(byPropKey('email', event.target.value
+            onChange={e => this.setState(byPropKey('email', e.target.value))}
             type="text"
             placeholder="Email Address"
           />
           <input
             value={passwordOne}
-            onChange={event => this.setState(byPropKey('passwordOne', event.target.value))}
+            onChange={e => this.setState(byPropKey('passwordOne', e.target.value))}
             type="password"
             placeholder="Password"
           />
           <input
             value={passwordTwo}
-            onChange={event => this.setState(byPropKey('passwordTwo', event.target.value))}
+            onChange={e => this.setState(byPropKey('passwordTwo', e.target.value))}
             type="password"
             placeholder="Confirm Password"
           />
@@ -93,13 +93,13 @@ class SignUpForm extends Component {
 
 const SignUpLink = () =>
   <p>
-    Don`'`t have an account?
+    Don&apos;t have an account?
     {' '}
     <Link to={routes.SIGN_UP}>Sign Up</Link>
   </p>
 
 
 
-export default SignUpPage;
+export default withRouter(SignUpPage);
 
 export { SignUpForm, SignUpLink };
